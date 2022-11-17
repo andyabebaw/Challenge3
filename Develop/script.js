@@ -10,6 +10,84 @@ function writePassword() {
 
 }
 
+function generatePassword(){
+  var charCount;
+ 
+  // checks if input is a number and between 8 and 128
+  while (((charCount < 8 || charCount > 128 || typeof charCount !== "number" || isNaN(charCount)))){
+    console.log(typeof charCount)
+    charCount = parseInt(prompt("Please enter how many characters you want your password to have"));
+  }
+
+  var containsUpperCase = "";
+  var containsLowerCase = "";
+  var containsSpecialChars = "";
+  var containsNumbers = "";
+
+  // Do While repeats if all are false
+  do {
+    //checks if input is true or false ignoring casing
+    while(containsUpperCase.toString().toLowerCase()  != "true" && containsUpperCase.toString().toLowerCase()  != "false"){
+      containsUpperCase = prompt("Would you like your password to contain Upper Case Letters ('true' or 'false')");
+    }
+    containsUpperCase = containsUpperCase.toString().toLowerCase() === "true";
+  
+    //checks if input is true or false ignoring casing
+    while(containsLowerCase.toString().toLowerCase()  != "true" && containsLowerCase.toString().toLowerCase()  != "false"){
+      containsLowerCase = prompt("Would you like your password to contain Lower Case Letters ('true' or 'false')");
+    }
+    containsLowerCase = containsLowerCase.toString().toLowerCase() === "true";
+  
+    //checks if input is true or false ignoring casing
+    while(containsSpecialChars.toString().toLowerCase()  != "true" && containsSpecialChars.toString().toLowerCase()  != "false"){
+      containsSpecialChars = prompt("Would you like your password to contain special characters ('true' or 'false')");
+    }
+    containsSpecialChars = containsSpecialChars.toString().toLowerCase() === "true";
+  
+    //checks if input is true or false ignoring casing
+    while(containsNumbers.toString().toLowerCase()  != "true" && containsNumbers.toString().toLowerCase()  != "false"){
+      containsNumbers = prompt("Would you like your password to contain numbers ('true' or 'false')");
+    }
+    containsNumbers = containsNumbers.toString().toLowerCase() === "true";
+  } while( !containsUpperCase && !containsLowerCase && !containsSpecialChars && !containsNumbers);
+  
+
+  var password = generatePass(charCount,containsUpperCase,containsLowerCase,containsSpecialChars,containsNumbers);
+  return password;
+}
+
+function generatePass(characterCount, containsUpperCase, containsLowerCase, containsSpecialChars, containsNumbers){
+  var password = "";
+  //generates a random character
+  console.log(typeof containsLowerCase)
+  for(var i = 0; i < characterCount; i++){
+
+    //if it contains both upper and lowercase letter generate the casing randomly
+    if(containsLowerCase && containsUpperCase){
+      if (Math.random() > .5){
+        password += generateLowerCase()
+      } else {
+        password += generateUpperCase()
+      } 
+    } else if (containsLowerCase){
+      password += generateLowerCase()
+    } else if (containsUpperCase){
+      password += generateUpperCase()
+    }
+  }
+
+  //generates a random special character
+  if(containsSpecialChars){
+    password += generateSpecialCharacter();
+  }
+
+  //generates a random number
+  if(containsNumbers){
+    password += generateNumber();
+  }
+
+  return password;
+}
 
 //generates random lowercase letter
 function generateLowerCase(){ 
