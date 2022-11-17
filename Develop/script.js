@@ -67,9 +67,17 @@ function generatePassword(){
 
 function generatePass(characterCount, containsUpperCase, containsLowerCase, containsSpecialChars, containsNumbers){
   var password = "";
+  var charCount = characterCount;
+  if (containsSpecialChars){
+    charCount -= 1;
+  }
+  if (containsNumbers){
+    charCount -= 1;
+  }
   //generates a random character
   console.log(typeof containsLowerCase)
-  for(var i = 0; i < characterCount; i++){
+  
+  for(var i = 0; i < charCount; i++){
 
     //if it contains both upper and lowercase letter generate the casing randomly
     if(containsLowerCase && containsUpperCase){
@@ -87,12 +95,21 @@ function generatePass(characterCount, containsUpperCase, containsLowerCase, cont
 
   //generates a random special character
   if(containsSpecialChars){
-    password += generateSpecialCharacter();
+    if(!containsNumbers){
+      while(password.length < characterCount){
+        password += generateSpecialCharacter();
+      }
+    } else {
+      password += generateSpecialCharacter();
+    }
+    
   }
 
   //generates a random number
   if(containsNumbers){
-    password += generateNumber();
+    while(password.length < characterCount){
+      password += generateNumber();
+    }
   }
 
   return password;
