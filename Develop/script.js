@@ -3,7 +3,10 @@ var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 function writePassword() {
+  
+
   var password = generatePassword();
+  
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
@@ -11,6 +14,12 @@ function writePassword() {
 }
 
 function generatePassword(){
+  var confirmRules = "";
+  while(confirmRules.toString().toLowerCase()  != "yes"){
+    confirmRules = prompt("Password Rules: \n-length of at least 8 characters and no more than 128 characters \n" + 
+    "-may contains lowercase, uppercase, numeric, and/or special characters\n Respond 'Yes' to continue");
+  }
+  
   var charCount;
  
   // checks if input is a number and between 8 and 128
