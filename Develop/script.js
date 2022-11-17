@@ -68,9 +68,12 @@ function generatePassword(){
 function generatePass(characterCount, containsUpperCase, containsLowerCase, containsSpecialChars, containsNumbers){
   var password = "";
   var charCount = characterCount;
+
+  //leaves room for 1 special character
   if (containsSpecialChars){
     charCount -= 1;
   }
+  //leaves room for 1 number
   if (containsNumbers){
     charCount -= 1;
   }
@@ -96,10 +99,12 @@ function generatePass(characterCount, containsUpperCase, containsLowerCase, cont
   //generates a random special character
   if(containsSpecialChars){
     if(!containsNumbers){
+      //if password is not at max length, generate special characters until it is
       while(password.length < characterCount){
         password += generateSpecialCharacter();
       }
     } else {
+      //if the password is supposed to contains numbers, save it space to add a number by only adding 1 char
       password += generateSpecialCharacter();
     }
     
@@ -107,6 +112,7 @@ function generatePass(characterCount, containsUpperCase, containsLowerCase, cont
 
   //generates a random number
   if(containsNumbers){
+    //if password is not at max length, generate numbers until it is
     while(password.length < characterCount){
       password += generateNumber();
     }
