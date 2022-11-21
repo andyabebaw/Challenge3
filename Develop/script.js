@@ -13,7 +13,6 @@ function writePassword() {
 
 }
 
-
 function generatePassword(){
   
   confirmRules = alert("Password Rules: \n-length of at least 8 characters and no more than 128 characters \n" + 
@@ -21,12 +20,14 @@ function generatePassword(){
 
   
   var charCount;
- 
+  var response;
   // checks if input is a number and between 8 and 128
   while (((charCount < 8 || charCount > 128 || typeof charCount !== "number" || isNaN(charCount)))){
-    console.log(typeof charCount)
-    charCount = parseInt(prompt("Please enter how many characters you want your password to have"));
+    response = prompt("Please enter how many characters you want your password to have")
+    if(response === null) break;
+    charCount = parseInt(response);
   }
+  if(response === null) return "Your Secure Password";
 
   var containsUpperCase = "";
   var containsLowerCase = "";
@@ -66,84 +67,92 @@ function generatePassword(){
 }
 
 function generatePass(characterCount, containsUpperCase, containsLowerCase, containsSpecialChars, containsNumbers){
-  var password = "";
-  var charCount = characterCount;
-
-  //leaves room for 1 special character
-  if (containsSpecialChars){
-    charCount -= 1;
-  }
-  //leaves room for 1 number
-  if (containsNumbers){
-    charCount -= 1;
-  }
-  //generates a random character
-  console.log(typeof containsLowerCase)
   
-  for(var i = 0; i < charCount; i++){
-
-    //if it contains both upper and lowercase letter generate the casing randomly
-    if(containsLowerCase && containsUpperCase){
-      if (Math.random() > .5){
-        password += generateLowerCase()
-      } else {
-        password += generateUpperCase()
-      } 
-    } else if (containsLowerCase){
-      password += generateLowerCase()
-    } else if (containsUpperCase){
-      password += generateUpperCase()
-    }
-  }
-
-  //generates a random special character
-  if(containsSpecialChars){
-    if(!containsNumbers){
-      //if password is not at max length, generate special characters until it is
-      while(password.length < characterCount){
-        password += generateSpecialCharacter();
+  var password = "";
+  var validChars = setValidCharsArray(containsUpperCase, containsLowerCase, containsSpecialChars, containsNumbers);
+  
+  while(password.length < characterCount){
+    // Generates a random character type from validChars array of selected valid character types
+    var randomType = Math.floor(Math.random() * validChars.length);
+      switch (validChars[randomType]) {
+        case "upperCase":
+          // generates a random character of specefic type, in this case UpperCase letters
+          password+=generateUpperCase();
+          // removes character type from array to increase probability that other types are selected next
+          validChars = removefromArray(validChars, "upperCase");
+          break;
+        case "lowerCase":
+          password+=generateLowerCase();
+          validChars = removefromArray(validChars, "lowerCase");
+          break;
+        case "special":
+          password+=generateSpecialCharacter();
+          validChars = removefromArray(validChars, "special");
+          break;
+        case "number":
+          password+=generateNumber();
+          validChars = removefromArray(validChars, "number");
+          break;
       }
-    } else {
-      //if the password is supposed to contains numbers, save it space to add a number by only adding 1 char
-      password += generateSpecialCharacter();
-    }
-    
+      // valid chars is 0 when all valid character types have been used. 
+      // Reset the valid char array again to allow characters to be reused
+      // Without this removal process there is no guarantee that each char type is include, randomoninty could skip a type
+      if (validChars.length == 0){
+        validChars = setValidCharsArray(containsUpperCase, containsLowerCase, containsSpecialChars, containsNumbers);
+      }
   }
-
-  //generates a random number
-  if(containsNumbers){
-    //if password is not at max length, generate numbers until it is
-    while(password.length < characterCount){
-      password += generateNumber();
-    }
-  }
-
   return password;
 }
 
+// sets char array with selected char types
+function setValidCharsArray(containsUpperCase, containsLowerCase, containsSpecialChars, containsNumbers){
+  var validChars = []
+  if(containsUpperCase){
+    validChars.push("upperCase"); 
+  }
+  if(containsLowerCase){
+    validChars.push("lowerCase");
+  }
+  if(containsSpecialChars){
+    validChars.push("special");
+  }
+  if(containsNumbers){
+    validChars.push("number");
+  }
+  return validChars;
+}
+
+function removefromArray(array, toRemove){
+  array = array.filter(function(item) {
+    return item !== toRemove
+  })
+return array;
+}
+
+// checks if resonse is true or false ignoring casing
 function checkIfValidTrueOrFalse(response){
   return response.toString().toLowerCase()  != "true" && response.toString().toLowerCase()  != "false";
 }
 
-//generates random lowercase letter
+// generates random lowercase letter
 function generateLowerCase(){ 
   var characters = 'abcdefghijklmnopqrstuvwxyz';
   return characters.charAt(Math.floor(Math.random() * characters.length));  
 }
 
-//generates random uppercase letter
+// generates random uppercase letter
 function generateUpperCase(){ 
   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   return characters.charAt(Math.floor(Math.random() * characters.length));  
 }
 
-//generates random number
+// generates random number
 function generateNumber(){
   var numbers = '0123456789';
   return numbers.charAt(Math.floor(Math.random() * numbers.length));  
 }
 
-//generates random special character
+// generates random special character
 function generateSpecialCharacter(){
   var specialCharacters = '!@#$%^&*()_-{[}]|\:"<,>.?/';
   return specialCharacters.charAt(Math.floor(Math.random() * specialCharacters.length));  
