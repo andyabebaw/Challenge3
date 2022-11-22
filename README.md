@@ -1,7 +1,7 @@
 # Week Two Challenge
 
 ## Github Pages
-https://andyabebaw.github.io/Challenge3/
+https://andyabebaw.github.io/PasswordGenerator/
  
 ## Description
 
