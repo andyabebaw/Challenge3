@@ -16,7 +16,7 @@ This website was built to serve as a password generation tool for users.  Given 
 
 ## Installation
 
-1. Go To https://github.com/andyabebaw/Challenge2
+1. Go To https://github.com/andyabebaw/PasswordGenerator
 2. Copy the Git clone link using SSH.
 3. In terminal on your local device, clone the repository using Git clone.
 4. Open in Visual Studio.
