@@ -1,4 +1,4 @@
-# Week Two Challenge
+# Week Three Password Challenge
 
 ## Github Pages
 https://andyabebaw.github.io/PasswordGenerator/
